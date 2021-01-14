@@ -1,42 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_uitoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kiborroq <kiborroq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/02 16:11:32 by kiborroq          #+#    #+#             */
-/*   Updated: 2021/01/14 09:20:45 by kiborroq         ###   ########.fr       */
+/*   Created: 2020/11/17 16:39:02 by kiborroq          #+#    #+#             */
+/*   Updated: 2020/11/17 16:39:29 by kiborroq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_atoi(const char *str)
+char	*ft_uitoa(unsigned int n)
 {
-	int		i;
-	size_t	num;
-	int		sign;
+	unsigned int	sep;
+	int				len;
+	int				i;
+	char			*num;
 
+	sep = 1;
+	len = 1;
 	i = 0;
-	num = 0;
-	sign = 1;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
+	while (n / sep > 9)
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		len++;
+		sep *= 10;
 	}
-	while (ft_isdigit(str[i]))
-	{
-		num = num * 10 + str[i] - '0';
-		i++;
-	}
-	if (sign > 0 && num > MAX_LONG)
-		return (-1);
-	if (sign < 0 && num - 1 > MAX_LONG)
+	if (!(num = ft_calloc(len + 1, sizeof(char))))
 		return (0);
-	return (num * sign);
+	while (i < len)
+	{
+		num[i] = n / sep + '0';
+		n %= sep;
+		sep /= 10;
+		i++;
+	}
+	return (num);
 }
